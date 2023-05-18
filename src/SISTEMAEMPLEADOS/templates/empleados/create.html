@@ -1,0 +1,11 @@
+{% include 'header.html' %}
+<form method="POST" action="/store" enctype="multipart/form-data">
+    <input type="text" name="txtNombre" id="txtNombre" placeholder="Ingrese su nombre" required>
+    <br>
+    <input type="email" name="txtEmail" id="txtEmail" placeholder="Ingrese su correo" required>
+    <br>
+    <input type="file" name="txtFoto" id="txtFoto" placeholder="Ingrese una foto" required>
+    <br>
+    <input type="submit" value="Agregar">
+</form>
+{% include 'footer.html' %}
