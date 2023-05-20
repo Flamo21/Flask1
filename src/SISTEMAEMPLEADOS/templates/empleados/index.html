@@ -1,13 +1,35 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-    <title>Inicio</title>
-</head>
-<body>
+
     {% include 'header.html' %}
+
+
+{% with messages= get_flashed_messages() %}
+
+{% if messages %}
+    <div class="alert alert-danger" role="alert">
+    {% for message in messages %}
+        {{ message }}
+    {% endfor %}
+    </div>
+{% endif %}
+
+{% endwith %}
+
+    <br><!--Con url_for de Flask, llamamos la clase, es decir def "CLASE"()-->
+    <div class="div1">
+        <div class="newuser">
+            <a href="{{url_for( 'create' )}}" class="btn-create">Ingresar nuevo empleado</a>
+        </div>
+        <form method="POST" action="/search" enctype="multipart/form-data" class="busqueda">
+            <input class="search-input" type="search" name="txtBusqueda" id="txtBusqueda" placeholder="Buscar por Nombre">
+            <button class="btn-search" type="submit">
+                <picture class="icon-search">
+                    <img src="{{ url_for('static', filename='img/search.png') }}" alt="Logo">
+                </picture>
+            </button>
+        </form>
+    </div>
+    <br>
+    <br>
     <table class="table table-striped">
         <thead>
             <tr>
@@ -23,13 +45,13 @@
             <tr>
                 <td>{{empleado[0] }}</td>
                 <td>
-                    <img class="img-thumbnail" width="100" src="uploads/{{empleado[3] }}" alt="">
+                    <img class="img-thumbnail" width="100px" height="100px" src="uploads/{{empleado[3] }}" alt="">
                     </td>
                 <td>{{empleado[1] }}</td>
                 <td>{{empleado[2] }}</td>
                 <td>
-                    <a href="/edit/{{empleado[0]}}">Editar</a> ||
-                    <a href="/destruir/{{empleado[0]}}">Eliminar</a>
+                    <a href="/edit/{{empleado[0]}}" class="btn btn-warning">Editar</a>
+                    <a onclick="return confirm('¿Desea eliminar al empleado?')" href="/destruir/{{empleado[0]}}" class="btn btn-danger">Eliminar</a>
                 </td>
             </tr>
             {% endfor %}

@@ -1,5 +1,5 @@
 from flask import Flask
-from flask import render_template,request,redirect
+from flask import render_template,request,redirect,url_for,flash
 from flaskext.mysql import MySQL
 from flask import send_from_directory #Poder enviar imagen de un directorio
 
@@ -7,6 +7,8 @@ from datetime import datetime
 import os #Modulo para ingresar a los archivos del sistema, y editar la foto
 
 app = Flask(__name__) #__name__ : Permite que se ejecute como un modulo independiente
+app.secret_key="clave.secreta" #Al usar flash para enviar mensajes, es necesario una clave secreta para poder asegurar los mensajes
+
 
 mysql=MySQL() #Declaramos la conexión
 app.config['MYSQL_DATABASE_HOST']='localhost'
@@ -97,14 +99,21 @@ def edit(id):
     return render_template('empleados/edit.html', empleados=empleados)
 
 @app.route('/create')
-def method_name():
+def create():
     return render_template('empleados/create.html')
+
 
 @app.route('/store', methods=['POST']) #Creamos un route, pero con el metodo POST para que pueda recibir la información de un HTML
 def storage():
     _nombre=request.form['txtNombre']#Importar request de Flask para poder usarlo
     _correo=request.form['txtEmail']#Importar request de Flask para poder usarlo
     _foto=request.files['txtFoto']#Como es archivo cambiamos el form por file
+
+
+    if _nombre=='' or _correo=='' or _foto=='':
+        flash("Recuerda llenar los datos de los campos")
+        return redirect(url_for('create')) 
+
 
     now=datetime.now()
     time=now.strftime("%Y%H%M%S")
@@ -121,6 +130,27 @@ def storage():
     cursor.execute(sql,datos)
     conn.commit()
     return redirect('/')
+
+@app.route('/search', methods=['POST'])
+def search():
+    # Realizar aquí la lógica de búsqueda con el término ingresado
+    buscar=request.form['txtBusqueda']
+    
+    if buscar =='':
+        flash("Rellenar campo de busqueda")
+        return redirect(url_for('index')) 
+    
+    conn=mysql.connect()
+    cursor=conn.cursor()
+    cursor.execute("SELECT * FROM empleados WHERE nombre LIKE %s", ('%'+buscar+'%'))
+
+    empleado = cursor.fetchall()
+    print(empleado)
+    conn.commit()
+    # Redirigir a una página de resultados
+    return render_template('empleados/index.html', empleados=empleado)
+
+    #return redirect(url_for('/'))
 
 
 if __name__ == '__main__':

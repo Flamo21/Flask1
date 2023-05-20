@@ -1,19 +1,40 @@
 {% include 'header.html' %}
-Formulario
+
 {% for empleado in empleados %}
 
-<form method="POST" action="/update" enctype="multipart/form-data">        
-    <input type="text" value="{{empleado[0] }}" name="txtID" id="txtID">
-    <br>
-    <input type="text" value="{{empleado[1] }}" name="txtNombre" id="txtNombre" placeholder="Ingrese su nombre" required>
-    <br>
-    <input type="email" value="{{empleado[2] }}" name="txtEmail" id="txtEmail" placeholder="Ingrese su correo" required>
-    <br>
-    Foto:
-    {{empleado[3] }}
-    <input type="file" name="txtFoto" id="txtFoto" placeholder="Ingrese una foto">
-    <br>
-    <input type="submit" value="Agregar">
+<form method="POST" action="/update" enctype="multipart/form-data">
+    <div class="card">
+        <div class="card-header">
+           Editar datos del empleado
+        </div>
+        <div class="card-body">
+            <h4 class="card-title">Ingresar datos del empleado</h4>
+            <p class="card-text">
+    <div class="form-group">
+      <label for="txtID"></label>
+      <input type="text" name="txtID" id="txtID" class="form-control" value="{{empleado[0] }}">
+    </div>
+    <div class="form-group">
+        <label for="txtNombre">Actualizar nombre:</label>
+        <input type="text" name="txtNombre" id="txtNombre" class="form-control" value="{{empleado[1] }}">
+      </div>
+      <div class="form-group">
+        <label for="txtEmail">Actualizar email:</label>
+        <input type="text" name="txtEmail" id="txtEmail" class="form-control" value="{{empleado[2] }}">
+      </div>
+      <div class="form-group">
+        <label for="txtFoto">Actualizar foto:</label>
+        <img class="img-thumbnail" width="100" src={{ url_for('uploads',nombreFoto=empleado[3])}} alt="">
+        <input type="file" name="txtFoto" id="txtFoto" class="form-control" value="{{empleado[3] }}">
+      </div>
+    <div class="form-group">
+      <label for=""></label>
+      <input type="submit" class="btn btn-success" value="Agregar">
+      <a href="/" class="btn btn-primary">Regresar</a>    
+    </div>
+</p>
+</div>
+<div class="card-footer text-muted">
 </form>
 
 {% endfor %}

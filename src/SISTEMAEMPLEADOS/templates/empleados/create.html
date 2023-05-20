@@ -1,11 +1,48 @@
 {% include 'header.html' %}
-<form method="POST" action="/store" enctype="multipart/form-data">
-    <input type="text" name="txtNombre" id="txtNombre" placeholder="Ingrese su nombre" required>
-    <br>
-    <input type="email" name="txtEmail" id="txtEmail" placeholder="Ingrese su correo" required>
-    <br>
-    <input type="file" name="txtFoto" id="txtFoto" placeholder="Ingrese una foto" required>
-    <br>
-    <input type="submit" value="Agregar">
-</form>
+
+{% with messages= get_flashed_messages() %}
+
+{% if messages %}
+    <div class="alert alert-danger" role="alert">
+    {% for message in messages %}
+        {{ message }}
+    {% endfor %}
+    </div>
+{% endif %}
+
+{% endwith %}
+
+<div class="card">
+    <div class="card-header">
+        Datos del empleado
+    </div>
+    <div class="card-body">
+        <h4 class="card-title">Ingresar datos del empleado</h4>
+        <p class="card-text">
+        <form method="POST" action="/store" enctype="multipart/form-data">     
+        <div class="form-group">
+          <label for="txtNombre">Ingrese su nombre:</label>
+          <input type="text" name="txtNombre" id="txtNombre" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="txtEmail">Ingrese su correo:</label>
+            <input type="email" name="txtEmail" id="txtEmail" class="form-control">
+        </div>
+          <div class="form-group">
+            <label for="txtFoto">Ingrese su foto:</label>
+            <input type="file" name="txtFoto" id="txtFoto" class="form-control">
+          </div>
+          <div class="form-group">
+            <input type="submit" class="btn btn-success" value="Agregar">
+            <a href="/" class="btn btn-primary">Regresar</a>    
+        </div>
+        </form>
+        </p>
+    </div>
+    <div class="card-footer text-muted">
+        Footer
+    </div>
+</div>
+
+
 {% include 'footer.html' %}
